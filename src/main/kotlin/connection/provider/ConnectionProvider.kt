@@ -18,7 +18,7 @@ class ConnectionProvider<T>(private val field: ConnectionField<T>, private val p
 
     var ind = 0
 
-    fun response() {
+    fun response(ping:Long = 1000) {
         thread {
             while (true) {
                 println("GETTING ${field.getTypeID()}")
@@ -27,7 +27,7 @@ class ConnectionProvider<T>(private val field: ConnectionField<T>, private val p
                 socket.receive(recv)
                 field.getFBValue(recv.data)
                 println("GOT ${field.getValue()}")
-                Thread.sleep(1000)
+                Thread.sleep(ping)
             }
         }
     }

@@ -24,6 +24,8 @@ import example.INCHOICE.*
 import canvas.items.CustomItem
 import canvas.items.RadioCustomItem
 import canvas.items.RectangleCustomItem
+import example.COUNTER.Count_HMI
+import example.COUNTER.Count_String_HMI
 
 @Composable
 fun CanvasContext(listFigures: SnapshotStateList<CustomItem>) {
@@ -56,8 +58,7 @@ fun main() = application {
 //                    CanvasContext(listFigures)
 //
 //                }
-                Lamp_HMI()
-                LampToggle()
+Count_String_HMI()
             }
         }
     }

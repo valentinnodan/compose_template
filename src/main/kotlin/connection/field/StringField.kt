@@ -11,7 +11,9 @@ data class StringField(override var content:String = "", override val contentSta
     }
 
     override fun getFBValue(d: ByteArray) {
-        setValue(String(d.copyOfRange(4, d.size)))
+        var size = ByteBuffer.wrap(d).getShort(1)
+        setValue(String(d.copyOfRange(3, 3 + size.toInt())))
+        println(d.contentToString())
     }
 
     override fun getTypeID(): TYPE_ID {

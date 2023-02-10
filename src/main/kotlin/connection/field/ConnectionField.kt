@@ -1,6 +1,7 @@
 package connection.field
 
 import androidx.compose.runtime.MutableState
+import kotlinx.coroutines.Dispatchers
 
 abstract class ConnectionField<V>(open var content: V, open val contentState: MutableState<V>) {
     abstract fun getFromFBValue():ByteArray
@@ -19,9 +20,9 @@ abstract class ConnectionField<V>(open var content: V, open val contentState: Mu
 
 enum class TYPE_ID(val code: Int) {
     BOOL(65),
-    USINT(65),
+    USINT(71),
     UINT(65),
-    UDINT(65),
+    UDINT(71),
     ULINT(65),
     SINT(65),
     INT(65),

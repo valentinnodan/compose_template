@@ -24,7 +24,7 @@ val ipField: ConnectionField<String> = StringField()
 
 var connectionProvider: ConnectionProvider<Boolean> = ConnectionProvider(field, 65001)
 var connectionProviderToggle: ConnectionProvider<Boolean> = ConnectionProvider(toggleField, 65000)
-//var connectionProviderIpText: ConnectionProvider<String> = ConnectionProvider(ipField, 65002)
+var connectionProviderIpText: ConnectionProvider<String> = ConnectionProvider(ipField, 65002)
 
 
 val ping = 1
@@ -67,8 +67,14 @@ fun Lamp_HMI() {
         ) {
             connectionProvider.response()
         }
-        Text(ipField.contentState.value)
-//        connectionProviderIpText.response()
+        Box(
+            modifier = Modifier.background(color = Color.Gray)
+                .width(200.dp)
+                .height(200.dp)
+        ) {
+            Text(ipField.contentState.value)
+            connectionProviderIpText.response()
+        }
     }
 }
 
