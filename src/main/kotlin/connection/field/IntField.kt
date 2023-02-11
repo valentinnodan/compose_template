@@ -9,7 +9,7 @@ import java.util.*
 data class IntField(var defaultValue:Int, override var content:Int = 0, override val contentState: MutableState<Int> = mutableStateOf(defaultValue)): ConnectionField<Int>(content, contentState) {
 
     override fun getFromFBValue(): ByteArray {
-        val bytes: ByteArray = ByteBuffer.allocate(4).putInt(content).array()
+        val bytes: ByteArray = ByteBuffer.allocate(5).put(getTypeID().code.toByte()).putInt(content).array()
         return bytes
     }
 
