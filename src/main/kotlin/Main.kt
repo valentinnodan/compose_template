@@ -1,65 +1,70 @@
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Button
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshots.SnapshotStateList
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
-import example.INCHOICE.*
 import canvas.items.CustomItem
-import canvas.items.RadioCustomItem
-import canvas.items.RectangleCustomItem
-import example.COUNTER.Count_HMI
-import example.COUNTER.Count_String_HMI
+import connection.ConnectionFieldRegistry
+import example.WATER_TANK.System
 
 @Composable
 fun CanvasContext(listFigures: SnapshotStateList<CustomItem>) {
-    Scaffold {innerPadding ->
+    Scaffold { innerPadding ->
         Box(Modifier.fillMaxHeight().fillMaxWidth().background(Color.Gray)) {
-            listFigures.forEach{f -> f.create()}
+            listFigures.forEach { f -> f.create() }
         }
     }
 }
+
+val registry = ConnectionFieldRegistry()
 
 
 fun main() = application {
     Window(
         onCloseRequest = ::exitApplication,
         title = "Canvas for CAT",
-        state = rememberWindowState(width = 400.dp, height = 500.dp)
+        state = rememberWindowState(width = 600.dp, height = 600.dp)
     ) {
-        val listFigures = mutableStateListOf<CustomItem>()
-        val count = remember { mutableStateOf(0) }
         MaterialTheme {
+//            CounterLamp(registry)
             Column {
-//                Row {
-//                    CheckboxButton(onClickFun = { listFigures.add(RectangleCustomItem()) })
-//                    RadioButton(onClickFun = { listFigures.add(RadioCustomItem()) })
-//                    ToggleButton(onClickFun = { listFigures.add(RectangleCustomItem()) })
-//                    DropdownButton(onClickFun = { listFigures.add(RectangleCustomItem()) })
-//
-//                }
-//                Column(Modifier.fillMaxSize(), Arrangement.spacedBy(5.dp)) {
-//                    CanvasContext(listFigures)
-//
-//                }
-Count_String_HMI()
+//                ComboBox("text",
+//                    "225.0.0.1",
+//                    65000,
+//                    registry,
+//                    modifier = Modifier.height(100.dp).width(100.dp),
+//                    items = listOf("aa", "ab", "cb", "ddd", "say soma"),
+//                    content = @Composable { item -> Text(item) });
+//                ListBox(
+//                    "text",
+//                    "225.0.0.1",
+//                    65000,
+//                    registry,
+//                    modifier = Modifier.height(100.dp).width(100.dp),
+//                    items = listOf("a2", "b2", "c2"),
+//                    content = @Composable { item -> Text(item) }
+//                )
+
+//InputTextBox("text1",
+//    "225.0.0.1",
+//    65010,
+//    registry)
+//                HorizontalTracker(0f..100f, 10f, steps = 10)
             }
+//            PositionedBox(@Composable {RoundKnob(0..100, 10, knobSize = 100.dp)}, x = 50, y = 150)
+//            PositionedBox(@Composable{ Indicator("text", "225.0.0.1", 65000, registry, 0, 100, 200.dp) })
+//            PositionedBox(@Composable{VerticalIndicator("text", "225.0.0.1", 65000, registry,15f, 70f, 0f, Color.Red, 10f )}, 100, 200)
+            System(registry)
         }
     }
 //    runTest()

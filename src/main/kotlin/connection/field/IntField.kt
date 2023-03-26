@@ -18,6 +18,10 @@ data class IntField(var defaultValue:Int, override var content:Int = 0, override
 
         if (buf[0] == TYPE_ID.UDINT.code.toByte()) {
             setValue(ByteBuffer.wrap(d).getInt(1))
+        } else {
+            if (buf[0] == TYPE_ID.UINT.code.toByte()) {
+                setValue(ByteBuffer.wrap(d).getInt(1))
+            }
         }
         println(d.contentToString())
     }

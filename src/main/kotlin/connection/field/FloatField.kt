@@ -7,7 +7,7 @@ import java.nio.ByteBuffer
 data class FloatField(var defaultValue:Float, override var content:Float = 0f, override val contentState: MutableState<Float> = mutableStateOf(defaultValue)): ConnectionField<Float>(content, contentState) {
 
     override fun getFromFBValue(): ByteArray {
-        val bytes: ByteArray = ByteBuffer.allocate(3).put(getTypeID().code.toByte()).putFloat(content).array()
+        val bytes: ByteArray = ByteBuffer.allocate(5).put(getTypeID().code.toByte()).putFloat(content).array()
         return bytes
     }
 

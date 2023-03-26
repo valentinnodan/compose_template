@@ -3,8 +3,9 @@ import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.5.31"
-    id("org.jetbrains.compose") version "1.0.0"
+    kotlin("jvm") version "1.7.20"
+    id("org.jetbrains.compose") version "1.3.1"
+    kotlin("plugin.serialization") version "1.8.0"
 }
 
 group = "me.valentinnodan"
@@ -20,6 +21,7 @@ dependencies {
     implementation(compose.desktop.currentOs)
     implementation("com.hierynomus:asn-one:0.5.0")
     implementation(kotlin("stdlib-jdk8"))
+    implementation("io.github.pdvrieze.xmlutil:serialization-jvm:0.84.3")
 }
 
 tasks.withType<KotlinCompile> {

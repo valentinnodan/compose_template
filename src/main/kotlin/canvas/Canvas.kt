@@ -10,8 +10,6 @@ import androidx.compose.ui.Modifier
 
 @Composable
 fun CustomCanvas() {
-    var text by remember { mutableStateOf("Hello, World!") }
-
     Canvas(modifier = Modifier.fillMaxSize()) {
     }
 }
