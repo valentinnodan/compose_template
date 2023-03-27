@@ -43,8 +43,8 @@ fun LampIndicator(name: String, host: String, port: Int, registry: ConnectionFie
 
 @Composable
 fun System(registry: ConnectionFieldRegistry) {
-    PositionedBox(@Composable { RoundKnob("knob1", "225.0.0.1", 65008, registry, 0..100, 0, knobSize = 60.dp) }, 10, 50)
-    PositionedBox(@Composable { RoundKnob("knob2", "225.0.0.1", 65009, registry, 0..100, 0, knobSize = 60.dp) }, 10, 120)
+    PositionedBox(@Composable { RoundKnob("knob1", "225.0.0.1", 65008, registry, 0..100, 0, knobSize = 60.dp, knobColor = Color.Red) }, 10, 50)
+    PositionedBox(@Composable { RoundKnob("knob2", "225.0.0.1", 65009, registry, 0..100, 0, knobSize = 60.dp, knobColor = Color.Blue) }, 10, 120)
     WaterTank(registry)
     PositionedBox(@Composable{ VerticalIndicator("outputIndicator", "225.0.0.1", 65003, registry,
         color = Color.Red, step = 20f, minTemperature = 0f, maxTemperature = 100f,
