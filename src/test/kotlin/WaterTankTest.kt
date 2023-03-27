@@ -39,6 +39,9 @@ fun runSimulation(){
 }
 
 fun runUpdate() {
+    if (knob1.field.getValue() == 0) {
+        return
+    }
     if (isInlet.field.getValue() || isHeat.field.getValue() || isOutlet.field.getValue()) {
         return
     }
