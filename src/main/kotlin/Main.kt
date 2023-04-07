@@ -14,8 +14,19 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import canvas.items.CustomItem
+import connection.AbstractClient
 import connection.ConnectionFieldRegistry
+import connection.NamedClient
+import connection.PlainClient
+import connection.field.TYPE_ID
+import example.COUNTER.CounterLamp
+import example.COUNTER.Lamp
 import example.WATER_TANK.System
+import serializer.PlainMapping
+import serializer.getConf
+import serializer.getMapping
+import serializer.getPlainMapping
+import java.io.File
 
 @Composable
 fun CanvasContext(listFigures: SnapshotStateList<CustomItem>) {
@@ -26,7 +37,23 @@ fun CanvasContext(listFigures: SnapshotStateList<CustomItem>) {
     }
 }
 
-val registry = ConnectionFieldRegistry()
+fun buildMappingClient(modelFile: String, configFile: String = "", mode: String = ""): AbstractClient {
+    if (mode.equals("plain")) {
+        val modelText = File(modelFile).readText()
+        val mapping = getPlainMapping(modelText)
+
+        return PlainClient(mapping)
+    }
+
+    val modelText = File(modelFile).readText()
+    val mapping = getMapping(modelText)
+    val configText = File(configFile).readText()
+    val conf = getConf(configText)
+
+    return NamedClient(mapping, conf)
+}
+
+val client = buildMappingClient("src/main/kotlin/example/COUNTER/COUNTER.xml", "src/main/kotlin/example/COUNTER/COUNTER_CONF.xml", "")
 
 
 fun main() = application {
@@ -64,7 +91,8 @@ fun main() = application {
 //            PositionedBox(@Composable {RoundKnob(0..100, 10, knobSize = 100.dp)}, x = 50, y = 150)
 //            PositionedBox(@Composable{ Indicator("text", "225.0.0.1", 65000, registry, 0, 100, 200.dp) })
 //            PositionedBox(@Composable{VerticalIndicator("text", "225.0.0.1", 65000, registry,15f, 70f, 0f, Color.Red, 10f )}, 100, 200)
-            System(registry)
+            client.retrieveValues()
+            CounterLamp(client)
         }
     }
 //    runTest()

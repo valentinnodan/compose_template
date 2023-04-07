@@ -44,6 +44,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.*
 import androidx.compose.ui.zIndex
+import connection.AbstractClient
 import connection.ConnectionFieldRegistry
 import connection.field.ConnectionField
 import connection.field.TYPE_ID
@@ -85,19 +86,11 @@ fun CustomButton(
 
 @Composable
 fun Toggle(
-    name: String, host: String, port: Int, registry: ConnectionFieldRegistry,
+    name: String, client: AbstractClient,
     modifier: Modifier = Modifier,
     onCheckedChange: (Boolean) -> Unit = {}
 ) {
-
-    val toggleConnectionField = registry.getConnection(
-        name,
-        TYPE_ID.BOOL,
-        host,
-        port
-    ) as Pair<ConnectionField<Boolean>, ConnectionProvider<Boolean>>
-    val toggleField = toggleConnectionField.first
-    val connectionProviderToggle = toggleConnectionField.second
+    val toggleField = client.getField(name) as ConnectionField<Boolean>
 
     val checkedStateToggle = remember { toggleField }
     Switch(
@@ -105,7 +98,7 @@ fun Toggle(
         checked = checkedStateToggle.contentState.value,
         onCheckedChange = {
             checkedStateToggle.setValue(it)
-            connectionProviderToggle.request()
+            client.sendValue(name)
             onCheckedChange(it)
         }
     )
@@ -113,7 +106,7 @@ fun Toggle(
 
 @Composable
 fun Checkbox(
-    name: String, host: String, port: Int, registry: ConnectionFieldRegistry,
+    name: String, client: AbstractClient,
     modifier: Modifier = Modifier,
     onCheckedChange: (Boolean) -> Unit = {},
     checkboxColor: Color = MaterialTheme.colors.primary,
@@ -121,14 +114,7 @@ fun Checkbox(
     disabledColor: Color = MaterialTheme.colors.onSurface.copy(alpha = 0.38f),
     contentDescription: String? = null
 ) {
-    val checkboxConnectionField = registry.getConnection(
-        name,
-        TYPE_ID.BOOL,
-        host,
-        port
-    ) as Pair<ConnectionField<Boolean>, ConnectionProvider<Boolean>>
-    val checkboxField = checkboxConnectionField.first
-    val connectionProviderCheckbox = checkboxConnectionField.second
+    val checkboxField = client.getField(name) as ConnectionField<Boolean>
 
     val checkedStateCheckbox = remember { checkboxField }
 
@@ -138,7 +124,7 @@ fun Checkbox(
                 onClick = {
                     val changedValue = !checkedStateCheckbox.contentState.value
                     checkedStateCheckbox.setValue(changedValue)
-                    connectionProviderCheckbox.request()
+                    client.sendValue(name)
                     onCheckedChange(changedValue)
                 })
             .size(24.dp),
@@ -166,21 +152,14 @@ fun Checkbox(
 
 @Composable
 fun ListBox(
-    name: String, host: String, port: Int, registry: ConnectionFieldRegistry,
+    name: String, client: AbstractClient,
     modifier: Modifier = Modifier,
     items: List<String>,
     onItemSelected: (String) -> Unit = {},
     dropdownMaxHeight: Dp = 240.dp,
     content: @Composable (String) -> Unit
 ) {
-    val comboBoxConnectionField = registry.getConnection(
-        name,
-        TYPE_ID.STRING,
-        host,
-        port
-    ) as Pair<ConnectionField<String>, ConnectionProvider<String>>
-    val comboBoxField = comboBoxConnectionField.first
-    val connectionProviderComboBox = comboBoxConnectionField.second
+    val comboBoxField = client.getField(name) as ConnectionField<String>
 
     val checkedStateComboBox = remember { comboBoxField }
     var expanded by remember { mutableStateOf(false) }
@@ -236,7 +215,7 @@ fun ListBox(
                 DropdownMenuItem(
                     onClick = {
                         checkedStateComboBox.setValue(item)
-                        connectionProviderComboBox.request()
+                        client.sendValue(name)
                         onItemSelected(item)
                         selectedItem = item
                         expanded = false
@@ -255,21 +234,14 @@ fun ListBox(
 
 @Composable
 fun ComboBox(
-    name: String, host: String, port: Int, registry: ConnectionFieldRegistry,
+    name: String, client: AbstractClient,
     modifier: Modifier = Modifier,
     items: List<String>,
     onItemSelected: (String) -> Unit = {},
     dropdownMaxHeight: Dp = 240.dp,
     content: @Composable (String) -> Unit
 ) {
-    val comboBoxConnectionField = registry.getConnection(
-        name,
-        TYPE_ID.STRING,
-        host,
-        port
-    ) as Pair<ConnectionField<String>, ConnectionProvider<String>>
-    val comboBoxField = comboBoxConnectionField.first
-    val connectionProviderComboBox = comboBoxConnectionField.second
+    val comboBoxField = client.getField(name) as ConnectionField<String>
 
     val checkedStateComboBox = remember { comboBoxField }
     var expanded by remember { mutableStateOf(false) }
@@ -321,7 +293,7 @@ fun ComboBox(
                         Box(
                             modifier = Modifier.clickable {
                                 checkedStateComboBox.setValue(item)
-                                connectionProviderComboBox.request()
+                                client.sendValue(name)
                                 onItemSelected(item)
                                 selectedItem = item
                                 expanded = false
@@ -341,19 +313,12 @@ fun ComboBox(
 
 @Composable
 fun InputTextBox(
-    name: String, host: String, port: Int, registry: ConnectionFieldRegistry,
+    name: String, client: AbstractClient,
     modifier: Modifier = Modifier,
     onItemChanged: (String) -> Unit = {},
     hintText: String = "Write something"
 ) {
-    val inputTextBoxConnectionField = registry.getConnection(
-        name,
-        TYPE_ID.STRING,
-        host,
-        port
-    ) as Pair<ConnectionField<String>, ConnectionProvider<String>>
-    val textBoxField = inputTextBoxConnectionField.first
-    val connectionProviderTextBox = inputTextBoxConnectionField.second
+    val textBoxField = client.getField(name) as ConnectionField<String>
     val checkedStateTextBox = remember { textBoxField }
     var selectedItem: String by remember { mutableStateOf("") }
     Box(modifier = Modifier.fillMaxWidth()) {
@@ -374,7 +339,7 @@ fun InputTextBox(
                     "Drop Down",
                     Modifier.size(24.dp).clickable {
                         checkedStateTextBox.setValue(selectedItem)
-                        connectionProviderTextBox.request()
+                        client.sendValue(name)
                         onItemChanged(checkedStateTextBox.getValue())
                     }
                 )
@@ -387,7 +352,7 @@ fun InputTextBox(
 
 @Composable
 fun HorizontalTracker(
-    name: String, host: String, port: Int, registry: ConnectionFieldRegistry,
+    name: String, client: AbstractClient,
     range: ClosedFloatingPointRange<Float>,
     initialValue: Float,
     onValueSelected: (Float) -> Unit = {},
@@ -403,14 +368,7 @@ fun HorizontalTracker(
     tickSize: Dp = 1.dp,
     legendFontSize: TextUnit = 10.sp
 ) {
-    val trackerConnectionField = registry.getConnection(
-        name,
-        TYPE_ID.REAL,
-        host,
-        port
-    ) as Pair<ConnectionField<Float>, ConnectionProvider<Float>>
-    val trackerField = trackerConnectionField.first
-    val connectionProviderTracker = trackerConnectionField.second
+    val trackerField = client.getField(name) as ConnectionField<Float>
     val checkedStateTracker = remember { trackerField }
 
     var offsetX by remember { mutableStateOf(0f) }
@@ -441,7 +399,7 @@ fun HorizontalTracker(
                             val newValue = ((position.value + thumbSize.value / 2) / trackWidth.value) * (range.endInclusive - range.start)
                             selectedValue = newValue.coerceIn(range)
                             checkedStateTracker.setValue(selectedValue)
-                            connectionProviderTracker.request()
+                            client.sendValue(name)
                             onValueSelected(selectedValue)
                         },
                         onDragCancel = {
@@ -489,7 +447,7 @@ fun getTickPosition(value: Float, range: ClosedFloatingPointRange<Float>, thumbW
 
 @Composable
 fun RoundKnob(
-    name: String, host: String, port: Int, registry: ConnectionFieldRegistry,
+    name: String, client: AbstractClient,
     range: IntRange,
     value: Int,
     onValueSelected: (Int) -> Unit = {},
@@ -498,14 +456,7 @@ fun RoundKnob(
     knobColor: Color = MaterialTheme.colors.primary,
     legendColor: Color = MaterialTheme.colors.onBackground
 ) {
-    val knobConnectionField = registry.getConnection(
-        name,
-        TYPE_ID.UINT,
-        host,
-        port
-    ) as Pair<ConnectionField<Int>, ConnectionProvider<Int>>
-    val knobField = knobConnectionField.first
-    val connectionProviderKnob = knobConnectionField.second
+    val knobField = client.getField(name) as ConnectionField<Int>
     val checkedStateKnob = remember { knobField }
 
     var rotationAngle by remember { mutableStateOf(calculateRotationAngle(value, range))}
@@ -531,7 +482,7 @@ fun RoundKnob(
                     currValue = calculateValue(rotationAngle, range)
 
                     checkedStateKnob.setValue(currValue)
-                    connectionProviderKnob.request()
+                    client.sendValue(name)
                     onValueSelected(currValue)
                 },
                 onDrag = { change, dragAmount ->

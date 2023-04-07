@@ -14,7 +14,14 @@ abstract class ConnectionField<V>(open var content: V, open val contentState: Mu
                 TYPE_ID.REAL -> FloatField(0f)
                 TYPE_ID.LREAL -> DoubleField(0.0)
                 TYPE_ID.STRING -> StringField()
-                TYPE_ID.UINT -> IntField(0)
+                TYPE_ID.SINT -> SIntField(0)
+                TYPE_ID.USINT -> USIntField(0u)
+                TYPE_ID.INT -> IntField(0)
+                TYPE_ID.UINT -> UIntField(0u)
+                TYPE_ID.DINT -> DIntField(0)
+                TYPE_ID.UDINT -> UDIntField(0u)
+                TYPE_ID.LINT -> LIntField(0)
+                TYPE_ID.ULINT -> ULIntField(0u)
                 else -> {throw UnsupportedOperationException("Unsupported type literal")}
             }
         }
@@ -35,16 +42,16 @@ abstract class ConnectionField<V>(open var content: V, open val contentState: Mu
 
 enum class TYPE_ID(val code: Int) {
     BOOL(65),
-    USINT(71),
-    UINT(65),
-    UDINT(71),
-    ULINT(65),
-    SINT(65),
-    INT(65),
-    DINT(65),
-    LINT(65),
-    REAL(72),
-    LREAL(65),
+    SINT(66),
+    INT(67),
+    DINT(68),
+    LINT(69),
+    USINT(70),
+    UINT(71),
+    UDINT(72),
+    ULINT(73),
+    REAL(74),
+    LREAL(75),
     STRING(80),
     WSTRING(85),
     DATE_AND_TIME(79),

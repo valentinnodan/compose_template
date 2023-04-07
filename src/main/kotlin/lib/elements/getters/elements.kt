@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
+import connection.AbstractClient
 import connection.ConnectionFieldRegistry
 import connection.field.ConnectionField
 import connection.field.TYPE_ID
@@ -34,19 +35,12 @@ import connection.provider.ConnectionProvider
 import lib.elements.*
 
 @Composable
-fun Bulb(name: String, host: String, port: Int, registry: ConnectionFieldRegistry,
+fun Bulb(name: String, client: AbstractClient,
          size: Dp = 60.dp, borderWidth:Dp = 10.dp,
          modifier: Modifier = Modifier
          ) {
 
-    val toggleConnectionField = registry.getConnection(
-        name,
-        TYPE_ID.BOOL,
-        host,
-        port
-    ) as Pair<ConnectionField<Boolean>, ConnectionProvider<Boolean>>
-    val field = toggleConnectionField.first
-    val connectionProvider = toggleConnectionField.second
+    val field = client.getField(name) as ConnectionField<Boolean>
 
     var checkedStateBulb = remember { field }
     Round(
@@ -55,25 +49,17 @@ fun Bulb(name: String, host: String, port: Int, registry: ConnectionFieldRegistr
         size,
         size
     )
-    connectionProvider.response()
 }
 
 
 @Composable
-fun LightingText(name: String, host: String, port: Int, registry: ConnectionFieldRegistry,
+fun LightingText(name: String, client: AbstractClient,
                  text:String,
          width: Dp = 60.dp, height: Dp = 60.dp, borderWidth:Dp = 10.dp,
          modifier: Modifier = Modifier, lightBrush: Brush = LIGHT_RADIAL_BRUSH
          ) {
 
-    val toggleConnectionField = registry.getConnection(
-        name,
-        TYPE_ID.BOOL,
-        host,
-        port
-    ) as Pair<ConnectionField<Boolean>, ConnectionProvider<Boolean>>
-    val field = toggleConnectionField.first
-    val connectionProvider = toggleConnectionField.second
+    val field = client.getField(name) as ConnectionField<Boolean>
 
     var checkedStateBulb = remember { field }
 
@@ -86,53 +72,33 @@ fun LightingText(name: String, host: String, port: Int, registry: ConnectionFiel
     ) {
         Text(text, modifier = Modifier.align(Alignment.Center))
     }
-    connectionProvider.response()
 }
 
 @Composable
 fun TextBox(
     name: String,
-    host: String,
-    port: Int,
-    registry: ConnectionFieldRegistry,
+    client: AbstractClient,
     modifier: Modifier = Modifier.focusable(true)
 ) {
-    val textField = registry.getConnection(
-        name,
-        TYPE_ID.STRING,
-        host,
-        port
-    ) as Pair<ConnectionField<String>, ConnectionProvider<String>>
-
-    val field = textField.first
-    val connectionProvider = textField.second
+    val field = client.getField(name)
 
     var checkedState = remember { field }
     Box(
         modifier = modifier.then(Modifier.fillMaxWidth().fillMaxHeight())
     ) {
-        Text(checkedState.contentState.value.toString())
-        connectionProvider.response(1000)
+        Text(checkedState!!.contentState.value.toString())
     }
 }
 
 @Composable
 fun Indicator(
-    name: String, host: String, port: Int, registry: ConnectionFieldRegistry,
+    name: String, client: AbstractClient,
     minIndicatorValue: Int, maxIndicatorValue: Int, size: Dp,
     indicatorThickness: Dp = 28.dp,
     animationDuration: Int = 1000,
     animationDelay: Int = 0
 ) {
-    val indicatorField = registry.getConnection(
-        name,
-        TYPE_ID.UINT,
-        host,
-        port
-    ) as Pair<ConnectionField<Int>, ConnectionProvider<Int>>
-
-    val field = indicatorField.first
-    val connectionProvider = indicatorField.second
+    val field = client.getField(name) as ConnectionField<Int>
 
     var checkedState = remember { field }
     Box(
@@ -177,14 +143,13 @@ fun Indicator(
                 .align(Alignment.Center),
             fontSize = 30.sp
         )
-        connectionProvider.response()
     }
 }
 
 
 @Composable
 fun VerticalIndicator(
-    name: String, host: String, port: Int, registry: ConnectionFieldRegistry,
+    name: String, client: AbstractClient,
     temperature: Float = 0f,
     maxTemperature: Float,
     minTemperature: Float,
@@ -198,16 +163,7 @@ fun VerticalIndicator(
     font: SystemFontFamily = FontFamily.Default,
     showCurrentState: Boolean = false
 ) {
-
-    val indicatorField = registry.getConnection(
-        name,
-        TYPE_ID.REAL,
-        host,
-        port
-    ) as Pair<ConnectionField<Float>, ConnectionProvider<Float>>
-
-    val field = indicatorField.first
-    val connectionProvider = indicatorField.second
+    val field = client.getField(name) as ConnectionField<Float>
     var checkedState = remember { field }
 
     val stepCount = ((maxTemperature - minTemperature) / step).toInt()
@@ -243,8 +199,6 @@ fun VerticalIndicator(
             }
         }
 
-
-        connectionProvider.response()
     }
     for (i in (minTemperature.toInt()..maxTemperature.toInt()).reversed() step step.toInt()) {
         val halfLegendHeight = legendFontSize.value.dp / 2f

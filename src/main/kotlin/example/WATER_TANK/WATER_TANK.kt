@@ -9,6 +9,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import connection.AbstractClient
 import connection.ConnectionFieldRegistry
 import lib.elements.*
 import lib.elements.getters.Bulb
@@ -18,11 +19,11 @@ import lib.elements.setters.RoundKnob
 import lib.visual.PositionedBox
 
 @Composable
-fun WaterTank(registry: ConnectionFieldRegistry) {
+fun WaterTank(client: AbstractClient) {
 
     Box {
-        PositionedBox(@Composable { LampIndicator("lampIndicator1", "225.0.0.1", 65000, registry) }, 120, 190)
-        PositionedBox(@Composable { LampIndicator("lampIndicator2", "225.0.0.1", 65001, registry) }, 120, 380)
+        PositionedBox(@Composable { LampIndicator("lampIndicator1", client) }, 120, 190)
+        PositionedBox(@Composable { LampIndicator("lampIndicator2", client) }, 120, 380)
         PositionedBox(@Composable { PipeConnector(Color.Gray, 100.dp, 30.dp) }, 150, 100)
         PositionedBox(@Composable { Figure(RoundedCornerShape(100.dp),
             modifier = Modifier.size(200.dp, 300.dp)
@@ -32,7 +33,7 @@ fun WaterTank(registry: ConnectionFieldRegistry) {
         PositionedBox(@Composable { Pipe(Color.Gray, 100.dp, 30.dp) }, 400, 400)
         PositionedBox(@Composable {
             VerticalIndicator(
-                "tankIndicator", "225.0.0.1", 65002, registry,
+                "tankIndicator", client,
                 color = Color.Blue, step = 20f, minTemperature = 0f, maxTemperature = 100f,
                 trackHeight = 200.dp, indicatorWidth = 20.dp
             )
@@ -41,14 +42,12 @@ fun WaterTank(registry: ConnectionFieldRegistry) {
 }
 
 @Composable
-fun LampIndicator(name: String, host: String, port: Int, registry: ConnectionFieldRegistry, pipeSize: Dp = 30.dp) {
+fun LampIndicator(name: String, client: AbstractClient, pipeSize: Dp = 30.dp) {
     Row {
         PositionedBox(@Composable {
             Bulb(
                 name,
-                host,
-                port,
-                registry,
+                client,
                 size = pipeSize,
                 borderWidth = 4.dp,
                 modifier = Modifier.zIndex(2f)
@@ -60,13 +59,11 @@ fun LampIndicator(name: String, host: String, port: Int, registry: ConnectionFie
 
 
 @Composable
-fun System(registry: ConnectionFieldRegistry) {
+fun System(client: AbstractClient) {
     PositionedBox(@Composable {
         RoundKnob(
             "knob1",
-            "225.0.0.1",
-            65008,
-            registry,
+            client,
             0..100,
             0,
             knobSize = 60.dp,
@@ -76,19 +73,17 @@ fun System(registry: ConnectionFieldRegistry) {
     PositionedBox(@Composable {
         RoundKnob(
             "knob2",
-            "225.0.0.1",
-            65009,
-            registry,
+            client,
             0..100,
             0,
             knobSize = 60.dp,
             knobColor = Color.Blue
         )
     }, 10, 120)
-    WaterTank(registry)
+    WaterTank(client)
     PositionedBox(@Composable {
         VerticalIndicator(
-            "outputIndicator", "225.0.0.1", 65003, registry,
+            "outputIndicator", client,
             color = Color.Red, step = 20f, minTemperature = 0f, maxTemperature = 100f,
             trackHeight = 200.dp, indicatorWidth = 20.dp
         )
@@ -96,9 +91,7 @@ fun System(registry: ConnectionFieldRegistry) {
     PositionedBox(@Composable {
         LightingText(
             "stateInlet",
-            "225.0.0.1",
-            65005,
-            registry,
+            client,
             "Inlet",
             width = 70.dp,
             height = 25.dp,
@@ -108,9 +101,7 @@ fun System(registry: ConnectionFieldRegistry) {
     PositionedBox(@Composable {
         LightingText(
             "stateHeat",
-            "225.0.0.1",
-            65006,
-            registry,
+            client,
             "Heat",
             width = 70.dp,
             height = 25.dp,
@@ -120,9 +111,7 @@ fun System(registry: ConnectionFieldRegistry) {
     PositionedBox(@Composable {
         LightingText(
             "stateOutlet",
-            "225.0.0.1",
-            65007,
-            registry,
+            client,
             "Outlet",
             width = 70.dp,
             height = 25.dp,

@@ -1,41 +1,32 @@
+import connection.field.ConnectionField
 import kotlin.concurrent.thread
 
-val system = buildSystem("src/main/kotlin/example/WATER_TANK/WATER_TANK.xml")
-val model = system.second
-val registry = system.first
+val client = buildMappingClient("src/main/kotlin/example/WATER_TANK/WATER_TANK_PLAIN.xml")
 
 
 val TANK_VOLUME = 100
 val MAX_TEMP = 100
 
-var isInlet: FieldWithCallback<Boolean> = FieldWithCallback(registry.getConnection("stateInlet")!!.first,
-    {registry.getConnection("stateInlet")!!.second.request()}) as FieldWithCallback<Boolean>
-var isHeat: FieldWithCallback<Boolean> = FieldWithCallback(registry.getConnection("stateHeat")!!.first,
-    {registry.getConnection("stateHeat")!!.second.request()}) as FieldWithCallback<Boolean>
-var isOutlet: FieldWithCallback<Boolean> = FieldWithCallback(registry.getConnection("stateOutlet")!!.first,
-    {registry.getConnection("stateOutlet")!!.second.request()}) as FieldWithCallback<Boolean>
-var lamp1: FieldWithCallback<Boolean> = FieldWithCallback(registry.getConnection("lampIndicator1")!!.first,
-    {registry.getConnection("lampIndicator1")!!.second.request()}) as FieldWithCallback<Boolean>
-var lamp2: FieldWithCallback<Boolean> = FieldWithCallback(registry.getConnection("lampIndicator2")!!.first,
-    {registry.getConnection("lampIndicator2")!!.second.request()}) as FieldWithCallback<Boolean>
-var tankIndicator: FieldWithCallback<Float> = FieldWithCallback(registry.getConnection("tankIndicator")!!.first,
-    {registry.getConnection("tankIndicator")!!.second.request()}) as FieldWithCallback<Float>
-var outputIndicator: FieldWithCallback<Float> = FieldWithCallback(registry.getConnection("outputIndicator")!!.first,
-    {registry.getConnection("outputIndicator")!!.second.request()}) as FieldWithCallback<Float>
-var knob1: FieldWithCallback<Int> = FieldWithCallback(registry.getConnection("knob1")!!.first, {runUpdate()}) as FieldWithCallback<Int>
-var knob2: FieldWithCallback<Int> = FieldWithCallback(registry.getConnection("knob2")!!.first, {runUpdate()}) as FieldWithCallback<Int>
+var isInlet: FieldWithCallback<Boolean> = FieldWithCallback(client.getField("stateInlet") as ConnectionField<Boolean>,
+    {client.sendValue("stateInlet")})
+var isHeat: FieldWithCallback<Boolean> = FieldWithCallback(client.getField("stateHeat") as ConnectionField<Boolean>,
+    {client.sendValue("stateHeat")})
+var isOutlet: FieldWithCallback<Boolean> = FieldWithCallback(client.getField("stateOutlet") as ConnectionField<Boolean>,
+    {client.sendValue("stateOutlet")})
+var lamp1: FieldWithCallback<Boolean> = FieldWithCallback(client.getField("lampIndicator1") as ConnectionField<Boolean>,
+    {client.sendValue("lampIndicator1")})
+var lamp2: FieldWithCallback<Boolean> = FieldWithCallback(client.getField("lampIndicator2") as ConnectionField<Boolean>,
+    {client.sendValue("lampIndicator2")})
+var tankIndicator: FieldWithCallback<Float> = FieldWithCallback(client.getField("tankIndicator") as ConnectionField<Float>,
+    {client.sendValue("tankIndicator")})
+var outputIndicator: FieldWithCallback<Float> = FieldWithCallback(client.getField("outputIndicator") as ConnectionField<Float>,
+    {client.sendValue("outputIndicator")})
+var knob1: FieldWithCallback<Int> = FieldWithCallback(client.getField("knob1") as ConnectionField<Int>, {runUpdate()})
+var knob2: FieldWithCallback<Int> = FieldWithCallback(client.getField("knob2") as ConnectionField<Int>, {runUpdate()})
 
 
 fun runSimulation(){
-    thread {
-        val connection = registry.getConnection("knob1")!!
-        connection.second.response(callback = {knob1.callback(0)})
-    }
-    thread {
-        val connection = registry.getConnection("knob2")!!
-        connection.second.response(callback = {knob2.callback(0)})
-    }
-
+    client.retrieveValues(mapOf(Pair("knob1", {knob1.callback(0)}), Pair("knob2", {knob2.callback(0)})))
 }
 
 fun runUpdate() {
