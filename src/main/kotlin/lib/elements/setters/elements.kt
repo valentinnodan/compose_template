@@ -46,10 +46,10 @@ import androidx.compose.ui.unit.*
 import androidx.compose.ui.zIndex
 import connection.AbstractClient
 import connection.ConnectionFieldRegistry
-import connection.field.ConnectionField
-import connection.field.TYPE_ID
+import connection.field.*
 import connection.provider.ConnectionProvider
 import lib.elements.METALLIC_BRUSH
+import java.lang.UnsupportedOperationException
 import kotlin.concurrent.thread
 import kotlin.math.PI
 import kotlin.math.atan2
@@ -368,7 +368,7 @@ fun HorizontalTracker(
     tickSize: Dp = 1.dp,
     legendFontSize: TextUnit = 10.sp
 ) {
-    val trackerField = client.getField(name) as ConnectionField<Float>
+    val trackerField = client.getField(name) as ConnectionField<Number>
     val checkedStateTracker = remember { trackerField }
 
     var offsetX by remember { mutableStateOf(0f) }
@@ -449,14 +449,14 @@ fun getTickPosition(value: Float, range: ClosedFloatingPointRange<Float>, thumbW
 fun RoundKnob(
     name: String, client: AbstractClient,
     range: IntRange,
-    value: Int,
-    onValueSelected: (Int) -> Unit = {},
+    value: Float,
+    onValueSelected: (Number) -> Unit = {},
     knobSize: Dp = 48.dp,
     strokeWidth: Dp = 4.dp,
     knobColor: Color = MaterialTheme.colors.primary,
     legendColor: Color = MaterialTheme.colors.onBackground
 ) {
-    val knobField = client.getField(name) as ConnectionField<Int>
+    val knobField = client.getField(name) as ConnectionField<Float>
     val checkedStateKnob = remember { knobField }
 
     var rotationAngle by remember { mutableStateOf(calculateRotationAngle(value, range))}
@@ -537,13 +537,13 @@ fun RoundKnob(
     }
 }
 
-private fun calculateRotationAngle(value: Int, range: IntRange):Float {
-    val ratio = (value - range.start).toFloat() / (range.endInclusive - range.start)
+private fun calculateRotationAngle(value: Float, range: IntRange):Float {
+    val ratio = (value - range.start) / (range.endInclusive - range.start)
     return ratio * 300 - 150
 }
 
-private fun calculateValue(rotationAngle: Float, range: IntRange): Int {
+private fun calculateValue(rotationAngle: Float, range: IntRange): Float {
     val ratio = (rotationAngle + 150) / 300
     val value = ratio * (range.endInclusive - range.start) + range.start
-    return value.toInt()
+    return value
 }

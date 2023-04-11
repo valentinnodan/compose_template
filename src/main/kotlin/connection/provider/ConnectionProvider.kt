@@ -17,7 +17,7 @@ class ConnectionProvider(private val port: Int, private val host: String = "225.
 
     var ind = 0
 
-    fun response(fieldGetter: (ByteArray) -> Pair<Pair<ConnectionField<out Any>, ByteArray>, String>, ping:Long = 1000, callbacks: Map<String, () -> Unit> = mapOf()) {
+    fun response(fieldGetter: (ByteArray) -> Pair<Pair<ConnectionField<out Any>, ByteArray>, String>, ping:Long = 500, callbacks: Map<String, () -> Unit> = mapOf()) {
         thread {
             while (true) {
                 val buf = ByteArray(1024);

@@ -22,6 +22,7 @@ import connection.field.TYPE_ID
 import example.COUNTER.CounterLamp
 import example.COUNTER.Lamp
 import example.WATER_TANK.System
+import example.WATER_TANK.WaterTank
 import serializer.PlainMapping
 import serializer.getConf
 import serializer.getMapping
@@ -53,7 +54,8 @@ fun buildMappingClient(modelFile: String, configFile: String = "", mode: String 
     return NamedClient(mapping, conf)
 }
 
-val client = buildMappingClient("src/main/kotlin/example/COUNTER/COUNTER.xml", "src/main/kotlin/example/COUNTER/COUNTER_CONF.xml", "")
+//val client = buildMappingClient("src/main/kotlin/example/COUNTER/COUNTER.xml", "src/main/kotlin/example/COUNTER/COUNTER_CONF.xml", "")
+val client = buildMappingClient("src/main/kotlin/example/WATER_TANK/WATER_TANK.xml", "src/main/kotlin/example/WATER_TANK/WATER_TANK_CONF.xml", "")
 
 
 fun main() = application {
@@ -92,7 +94,8 @@ fun main() = application {
 //            PositionedBox(@Composable{ Indicator("text", "225.0.0.1", 65000, registry, 0, 100, 200.dp) })
 //            PositionedBox(@Composable{VerticalIndicator("text", "225.0.0.1", 65000, registry,15f, 70f, 0f, Color.Red, 10f )}, 100, 200)
             client.retrieveValues()
-            CounterLamp(client)
+//            CounterLamp(client)
+            System(client)
         }
     }
 //    runTest()

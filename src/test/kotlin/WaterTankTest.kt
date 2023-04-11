@@ -1,7 +1,7 @@
 import connection.field.ConnectionField
 import kotlin.concurrent.thread
 
-val client = buildMappingClient("src/main/kotlin/example/WATER_TANK/WATER_TANK_PLAIN.xml")
+val client = buildMappingClient("src/main/kotlin/example/WATER_TANK/WATER_TANK.xml", "src/main/kotlin/example/WATER_TANK/WATER_TANK_CONF.xml", mode = "")
 
 
 val TANK_VOLUME = 100
@@ -26,7 +26,7 @@ var knob2: FieldWithCallback<Int> = FieldWithCallback(client.getField("knob2") a
 
 
 fun runSimulation(){
-    client.retrieveValues(mapOf(Pair("knob1", {knob1.callback(0)}), Pair("knob2", {knob2.callback(0)})))
+    client.retrieveValues(mapOf(Pair("knob1", {knob1.callback(0)}), Pair("knob2", {knob2.callback(0)})), false)
 }
 
 fun runUpdate() {

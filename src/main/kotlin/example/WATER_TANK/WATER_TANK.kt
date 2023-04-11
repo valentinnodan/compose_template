@@ -65,7 +65,7 @@ fun System(client: AbstractClient) {
             "knob1",
             client,
             0..100,
-            0,
+            0f,
             knobSize = 60.dp,
             knobColor = Color.Red
         )
@@ -75,7 +75,7 @@ fun System(client: AbstractClient) {
             "knob2",
             client,
             0..100,
-            0,
+            0f,
             knobSize = 60.dp,
             knobColor = Color.Blue
         )

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Mapping>
+<Conf>
     <Inputs>
         <Input type="BOOL" host="225.0.0.1" port="65000"/>
         <Input type="REAL" host="225.0.0.1" port="65001"/>
     </Inputs>
     <Outputs>
-        <Output type="UINT" host="225.0.0.1" port="65002"/>
+        <Output type="REAL" host="225.0.0.1" port="65002"/>
     </Outputs>
-</Mapping>
+</Conf>

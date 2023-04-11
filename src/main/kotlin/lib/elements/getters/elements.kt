@@ -98,7 +98,7 @@ fun Indicator(
     animationDuration: Int = 1000,
     animationDelay: Int = 0
 ) {
-    val field = client.getField(name) as ConnectionField<Int>
+    val field = client.getField(name) as ConnectionField<Number>
 
     var checkedState = remember { field }
     Box(
@@ -119,8 +119,8 @@ fun Indicator(
             )
 
             var sweepAngle = 0f;
-            if (checkedState.contentState.value != 0) {
-                sweepAngle = (checkedState.contentState.value / (maxIndicatorValue - minIndicatorValue).toFloat()) * 180f
+            if (checkedState.contentState.value.toInt() != 0) {
+                sweepAngle = (checkedState.contentState.value.toInt() / (maxIndicatorValue - minIndicatorValue).toFloat()) * 180f
             }
 
             // Foreground circle
@@ -163,7 +163,7 @@ fun VerticalIndicator(
     font: SystemFontFamily = FontFamily.Default,
     showCurrentState: Boolean = false
 ) {
-    val field = client.getField(name) as ConnectionField<Float>
+    val field = client.getField(name) as ConnectionField<Number>
     var checkedState = remember { field }
 
     val stepCount = ((maxTemperature - minTemperature) / step).toInt()
@@ -176,7 +176,7 @@ fun VerticalIndicator(
             .background(Color.LightGray)
             .border(BorderStroke(3.dp, METALLIC_BRUSH), RectangleShape)
     ) {
-        val temperatureOffset = (checkedState.contentState.value - minTemperature) / temperatureRange
+        val temperatureOffset = (checkedState.contentState.value.toFloat() - minTemperature) / temperatureRange
         val indicatorHeight = (temperatureOffset * trackHeight.value).dp
 
 

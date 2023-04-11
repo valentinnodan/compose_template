@@ -10,7 +10,7 @@
         <Input name="stateOutlet" type="BOOL" host="225.0.0.1" port="65007"/>
     </Inputs>
     <Outputs>
-        <Output name="knob1" type="UINT" host="225.0.0.1" port="65008"/>
-        <Output name="knob2" type="UINT" host="225.0.0.1" port="65009"/>
+        <Output name="knob1" type="REAL" host="225.0.0.1" port="65008"/>
+        <Output name="knob2" type="REAL" host="225.0.0.1" port="65009"/>
     </Outputs>
 </Mapping>

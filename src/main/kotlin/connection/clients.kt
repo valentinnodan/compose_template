@@ -14,13 +14,14 @@ abstract class AbstractClient() {
     val inputs: MutableSet<String> = mutableSetOf()
     val outputs: MutableSet<String> = mutableSetOf()
     val inputConnections: MutableList<ConnectionProvider> = mutableListOf()
+    val outputConnections: MutableList<ConnectionProvider> = mutableListOf()
 
     fun getField(name: String): ConnectionField<out Any>? {
         return registry.getConnection(name)?.first
     }
 
     abstract fun sendValue(name: String)
-    abstract fun retrieveValues(callbacks: Map<String, () -> Unit> = mapOf())
+    abstract fun retrieveValues(callbacks: Map<String, () -> Unit> = mapOf(), isInput: Boolean = true)
 }
 
 class PlainClient(mapping: PlainMapping): AbstractClient() {
@@ -33,6 +34,7 @@ class PlainClient(mapping: PlainMapping): AbstractClient() {
         mapping.outputs.outputs.forEach({
             registry.getConnection(it.name, TYPE_ID.valueOf(it.type), it.host, it.port)
             outputs.add(it.name)
+            outputConnections.add(registry.getConnection(it.name)!!.second)
         })
     }
 
@@ -43,12 +45,13 @@ class PlainClient(mapping: PlainMapping): AbstractClient() {
         connector.request(field, ByteArray(0))
     }
 
-    override fun retrieveValues(callbacks: Map<String, () -> Unit>) {
-        inputs.forEach{
+    override fun retrieveValues(callbacks: Map<String, () -> Unit>, isInput: Boolean) {
+        val units = if (isInput) inputs else outputs
+        units.forEach{
             val fieldConnector = registry.getConnection(it)
             val field = fieldConnector!!.first
             val connector = fieldConnector.second
-            connector.response({ba -> Pair(Pair(field, ba), it)})
+            connector.response({ba -> Pair(Pair(field, ba), it)}, callbacks=callbacks)
         }
     }
 }
@@ -78,6 +81,9 @@ class NamedClient(mapping: Mapping, conf: Conf): AbstractClient() {
         inputsTypes.values.forEach({
             inputConnections.add(registry.getConnector(it)!!)
         })
+        outputsTypes.values.forEach({
+            outputConnections.add(registry.getConnector(it)!!)
+        })
     }
 
     override fun sendValue(name: String) {
@@ -88,8 +94,9 @@ class NamedClient(mapping: Mapping, conf: Conf): AbstractClient() {
         connector.request(field, nameField.getFromFBValue())
     }
 
-    override fun retrieveValues(callbacks: Map<String, () -> Unit>) {
-        inputConnections.forEach {
+    override fun retrieveValues(callbacks: Map<String, () -> Unit>, isInput: Boolean) {
+        val units = if (isInput) inputConnections else outputConnections
+        units.forEach {
             it.response({ ba ->
             var size = ByteBuffer.wrap(ba).getShort(1)
             val name = String(ba.copyOfRange(3, 3 + size.toInt()))
@@ -97,7 +104,7 @@ class NamedClient(mapping: Mapping, conf: Conf): AbstractClient() {
             registry.getConnection(name)
             val field = registry.getConnection(name)!!.first
             Pair(Pair(field, ba.copyOfRange(offset, ba.size)), name)
-        })
+        }, callbacks= callbacks)
         }
     }
 }

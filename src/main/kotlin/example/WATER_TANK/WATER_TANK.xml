@@ -10,7 +10,7 @@
         <Input name="stateOutlet" type="BOOL"/>
     </Inputs>
     <Outputs>
-        <Output name="knob1" type="UINT"/>
-        <Output name="knob2" type="UINT"/>
+        <Output name="knob1" type="REAL"/>
+        <Output name="knob2" type="REAL"/>
     </Outputs>
 </Mapping>
