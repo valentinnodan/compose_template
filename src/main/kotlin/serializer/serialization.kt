@@ -62,6 +62,7 @@ fun getPlainMapping(modelText: String): PlainMapping {
 @Serializable
 @XmlSerialName("Mapping", "", "")
 data class Mapping(
+    val id: String,
     val inputs: Inputs,
     val outputs: Outputs,
 )

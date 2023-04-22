@@ -133,12 +133,12 @@ class JSONClient(mapping: Mapping, conf: Conf): UDPClient() {
         })
         mapping.inputs.inputs.forEach {
             val hostPort = inputsTypes.get(MSG_TYPE)
-            registry.getConnection(it.name, TYPE_ID.valueOf(it.type), hostPort!!.first, hostPort.second)
+            registry.getConnection("${mapping.id}#${it.name}", TYPE_ID.valueOf(it.type), hostPort!!.first, hostPort.second)
             inputs.add(it.name)
         }
         mapping.outputs.outputs.forEach({
             val hostPort = outputsTypes.get(MSG_TYPE)
-            registry.getConnection(it.name, TYPE_ID.valueOf(it.type), hostPort!!.first, hostPort.second)
+            registry.getConnection("${mapping.id}#${it.name}", TYPE_ID.valueOf(it.type), hostPort!!.first, hostPort.second)
             outputs.add(it.name)
         })
         conf.inputs.inputs.forEach({

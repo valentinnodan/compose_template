@@ -19,23 +19,26 @@ import lib.visual.PositionedBox
 
 
 @Composable
-fun Lamp(client: AbstractClient) {
-
-    PositionedBox(children = {
-        Toggle("TOGGLE", client)
-    }, x = 300, y = 100)
-    Bulb("LAMP", client)
-
+fun LampHMI(client: AbstractClient, id: String) {
+    Bulb("$id#LAMP", client)
+}
+@Composable
+fun ToggleHMI(client: AbstractClient, id: String) {
+    Toggle("$id#TOGGLE", client)
 }
 
 @Composable
-fun CounterLamp(client: AbstractClient) {
-    PositionedBox(children = {
-        Row {
-            Text("Count of changes: ")
-            TextBox("COUNT", client, Modifier.width(40.dp).height(30.dp).background(Color.LightGray))
+fun CounterHMI(client: AbstractClient, id: String) {
+    Row {
+        Text("Count of changes: ")
+        TextBox("$id#COUNT", client, Modifier.width(40.dp).height(30.dp).background(Color.LightGray))
 //            PositionedBox( children = {Indicator("count", "225.0.0.2", 65003, registry, 0, 100, 1000.dp)}, x = 100, y = 100)
-        }
-    }, x = 200)
-    Lamp(client)
+    }
+}
+
+@Composable
+fun CounterLampHMI(client: AbstractClient, id: String) {
+    PositionedBox(children = {CounterHMI(client, "1")}, x = 200)
+    LampHMI(client, "1")
+    PositionedBox(children = {example.COUNTER.ToggleHMI(client, "1")}, x = 300, y = 100)
 }

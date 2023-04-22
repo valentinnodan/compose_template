@@ -17,8 +17,7 @@ import canvas.items.CustomItem
 import connection.*
 import connection.field.BoolField
 import connection.field.TYPE_ID
-import example.COUNTER.CounterLamp
-import example.COUNTER.Lamp
+import example.COUNTER.CounterLampHMI
 import example.WATER_TANK.System
 import example.WATER_TANK.WaterTank
 import serializer.PlainMapping
@@ -73,8 +72,8 @@ fun main() = application {
         state = rememberWindowState(width = 600.dp, height = 600.dp)
     ) {
         MaterialTheme {
+            CounterLampHMI(client, "1")
             client.retrieveValues()
-            CounterLamp(client)
         }
     }
 }
