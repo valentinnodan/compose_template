@@ -19,6 +19,17 @@ data class BoolField(override var content:Boolean = false, override val contentS
         setValue(d[0] == TRUE_VALUE)
     }
 
+    override fun getFBValue(d: String) {
+        setValue(d.equals("TRUE"));
+    }
+
+    override fun getMsgValue(): String {
+        if (content) {
+            return "TRUE";
+        }
+        return "FALSE";
+    }
+
     override fun getTypeID(): TYPE_ID {
         return TYPE_ID.BOOL
     }

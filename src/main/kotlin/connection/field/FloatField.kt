@@ -11,12 +11,20 @@ data class FloatField(var defaultValue:Float, override var content:Float = 0f, o
         return bytes
     }
 
+    override fun getMsgValue(): String {
+        return getValue().toString()
+    }
+
     override fun getFBValue(d: ByteArray) {
         var buf = ByteBuffer.wrap(d)
 
         if (buf[0] == TYPE_ID.REAL.code.toByte()) {
             setValue(ByteBuffer.wrap(d).getFloat(1))
         }
+    }
+
+    override fun getFBValue(d: String) {
+        setValue(d.toFloat())
     }
 
     override fun getTypeID(): TYPE_ID {

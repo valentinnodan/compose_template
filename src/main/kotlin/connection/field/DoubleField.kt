@@ -13,12 +13,20 @@ data class DoubleField(var defaultValue:Double, override var content:Double = 0.
         return bytes
     }
 
+    override fun getMsgValue(): String {
+        return getValue().toString()
+    }
+
     override fun getFBValue(d: ByteArray) {
         var buf = ByteBuffer.wrap(d)
 
         if (buf[0] == TYPE_ID.LREAL.code.toByte()) {
             setValue(ByteBuffer.wrap(d).getDouble(1))
         }
+    }
+
+    override fun getFBValue(d: String) {
+        setValue(d.toDouble())
     }
 
     override fun getTypeID(): TYPE_ID {

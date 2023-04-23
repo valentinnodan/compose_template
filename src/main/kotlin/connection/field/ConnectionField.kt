@@ -27,7 +27,9 @@ abstract class ConnectionField<V>(open var content: V, open val contentState: Mu
         }
     }
     abstract fun getFromFBValue():ByteArray
+    abstract fun getMsgValue():String
     abstract fun getFBValue(d: ByteArray)
+    abstract fun getFBValue(d: String)
     abstract fun getTypeID():TYPE_ID
     fun getValue():V {
         return content

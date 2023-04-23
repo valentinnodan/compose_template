@@ -3,6 +3,7 @@ package connection
 import connection.field.ConnectionField
 import connection.field.TYPE_ID
 import connection.provider.ConnectionProvider
+import connection.provider.UDPConnectionProvider
 
 
 class ConnectionFieldRegistry {
@@ -14,7 +15,7 @@ class ConnectionFieldRegistry {
             return fieldRegistry[name]!!
         }
         val providerAddress = Pair(host, port)
-        val provider = providerRegistry.computeIfAbsent(providerAddress, {ConnectionProvider(port, host)})
+        val provider = providerRegistry.computeIfAbsent(providerAddress, { UDPConnectionProvider(port, host) })
         val field = ConnectionField.create(type)
         val connection = Pair(field, provider)
         fieldRegistry[name] = connection
@@ -24,6 +25,13 @@ class ConnectionFieldRegistry {
     fun getConnection(name: String): Pair<ConnectionField<out Any>,ConnectionProvider>? {
         if (name in fieldRegistry) {
             return fieldRegistry[name]!!
+        }
+        return null
+    }
+
+    fun getField(name: String): ConnectionField<out Any>? {
+        if (name in fieldRegistry) {
+            return fieldRegistry[name]!!.first
         }
         return null
     }

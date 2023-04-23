@@ -11,6 +11,10 @@ data class SIntField(var defaultValue:Byte, override var content:Byte = 0, overr
         return bytes
     }
 
+    override fun getMsgValue(): String {
+        return getValue().toString()
+    }
+
     override fun getFBValue(d: ByteArray) {
         var buf = ByteBuffer.wrap(d)
 
@@ -18,6 +22,10 @@ data class SIntField(var defaultValue:Byte, override var content:Byte = 0, overr
             setValue(ByteBuffer.wrap(d).get(1))
         }
         println(d.contentToString())
+    }
+
+    override fun getFBValue(d: String) {
+        setValue(d.toByte())
     }
 
     override fun getTypeID(): TYPE_ID {
@@ -32,6 +40,10 @@ data class USIntField(var defaultValue:UByte, override var content:UByte = 0u, o
         return bytes
     }
 
+    override fun getMsgValue(): String {
+        return getValue().toString()
+    }
+
     override fun getFBValue(d: ByteArray) {
         var buf = ByteBuffer.wrap(d)
 
@@ -39,6 +51,10 @@ data class USIntField(var defaultValue:UByte, override var content:UByte = 0u, o
             setValue(ByteBuffer.wrap(d).get(1).toUByte())
         }
         println(d.contentToString())
+    }
+
+    override fun getFBValue(d: String) {
+        setValue(d.toUByte())
     }
 
     override fun getTypeID(): TYPE_ID {
@@ -53,6 +69,10 @@ data class IntField(var defaultValue:Short, override var content:Short = 0, over
         return bytes
     }
 
+    override fun getMsgValue(): String {
+        return getValue().toString()
+    }
+
     override fun getFBValue(d: ByteArray) {
         var buf = ByteBuffer.wrap(d)
 
@@ -60,6 +80,10 @@ data class IntField(var defaultValue:Short, override var content:Short = 0, over
             setValue(ByteBuffer.wrap(d).getShort(1))
         }
         println(d.contentToString())
+    }
+
+    override fun getFBValue(d: String) {
+        setValue(d.toShort())
     }
 
     override fun getTypeID(): TYPE_ID {
@@ -74,6 +98,10 @@ data class UIntField(var defaultValue:UShort, override var content:UShort = 0u, 
         return bytes
     }
 
+    override fun getMsgValue(): String {
+        return getValue().toString()
+    }
+
     override fun getFBValue(d: ByteArray) {
         var buf = ByteBuffer.wrap(d)
 
@@ -81,6 +109,10 @@ data class UIntField(var defaultValue:UShort, override var content:UShort = 0u, 
             setValue(ByteBuffer.wrap(d).getShort(1).toUShort())
         }
         println(d.contentToString())
+    }
+
+    override fun getFBValue(d: String) {
+        setValue(d.toUShort())
     }
 
     override fun getTypeID(): TYPE_ID {
@@ -95,6 +127,10 @@ data class DIntField(var defaultValue:Int, override var content:Int = 0, overrid
         return bytes
     }
 
+    override fun getMsgValue(): String {
+        return getValue().toString()
+    }
+
     override fun getFBValue(d: ByteArray) {
         var buf = ByteBuffer.wrap(d)
 
@@ -102,6 +138,10 @@ data class DIntField(var defaultValue:Int, override var content:Int = 0, overrid
             setValue(ByteBuffer.wrap(d).getInt(1))
         }
         println(d.contentToString())
+    }
+
+    override fun getFBValue(d: String) {
+        setValue(d.toInt())
     }
 
     override fun getTypeID(): TYPE_ID {
@@ -116,6 +156,10 @@ data class UDIntField(var defaultValue:UInt, override var content:UInt = 0u, ove
         return bytes
     }
 
+    override fun getMsgValue(): String {
+        return getValue().toString()
+    }
+
     override fun getFBValue(d: ByteArray) {
         var buf = ByteBuffer.wrap(d)
 
@@ -123,6 +167,10 @@ data class UDIntField(var defaultValue:UInt, override var content:UInt = 0u, ove
             setValue(ByteBuffer.wrap(d).getInt(1).toUInt())
         }
         println(d.contentToString())
+    }
+
+    override fun getFBValue(d: String) {
+        setValue(d.toUInt())
     }
 
     override fun getTypeID(): TYPE_ID {
@@ -138,6 +186,10 @@ data class LIntField(var defaultValue:Long, override var content:Long = 0, overr
         return bytes
     }
 
+    override fun getMsgValue(): String {
+        return getValue().toString()
+    }
+
     override fun getFBValue(d: ByteArray) {
         var buf = ByteBuffer.wrap(d)
 
@@ -145,6 +197,10 @@ data class LIntField(var defaultValue:Long, override var content:Long = 0, overr
             setValue(ByteBuffer.wrap(d).getLong(1))
         }
         println(d.contentToString())
+    }
+
+    override fun getFBValue(d: String) {
+        setValue(d.toLong())
     }
 
     override fun getTypeID(): TYPE_ID {
@@ -159,6 +215,10 @@ data class ULIntField(var defaultValue:ULong, override var content:ULong = 0uL, 
         return bytes
     }
 
+    override fun getMsgValue(): String {
+        return getValue().toString()
+    }
+
     override fun getFBValue(d: ByteArray) {
         var buf = ByteBuffer.wrap(d)
 
@@ -166,6 +226,10 @@ data class ULIntField(var defaultValue:ULong, override var content:ULong = 0uL, 
             setValue(ByteBuffer.wrap(d).getLong(1).toULong())
         }
         println(d.contentToString())
+    }
+
+    override fun getFBValue(d: String) {
+        setValue(d.toULong())
     }
 
     override fun getTypeID(): TYPE_ID {

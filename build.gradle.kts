@@ -22,6 +22,7 @@ dependencies {
     implementation("com.hierynomus:asn-one:0.5.0")
     implementation(kotlin("stdlib-jdk8"))
     implementation("io.github.pdvrieze.xmlutil:serialization-jvm:0.84.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
 }
 
 tasks.withType<KotlinCompile> {
