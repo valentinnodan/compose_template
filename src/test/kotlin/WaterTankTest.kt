@@ -21,8 +21,12 @@ var tankIndicator: FieldWithCallback<Float> = FieldWithCallback(client.getField(
     {client.sendValue("tankIndicator")})
 var outputIndicator: FieldWithCallback<Float> = FieldWithCallback(client.getField("outputIndicator") as ConnectionField<Float>,
     {client.sendValue("outputIndicator")})
-var knob1: FieldWithCallback<Int> = FieldWithCallback(client.getField("knob1") as ConnectionField<Int>, {runUpdate()})
-var knob2: FieldWithCallback<Int> = FieldWithCallback(client.getField("knob2") as ConnectionField<Int>, {runUpdate()})
+var knob1: FieldWithCallback<Int> = FieldWithCallback(client.getField("knob1") as ConnectionField<Int>, {
+    runUpdate()
+})
+var knob2: FieldWithCallback<Int> = FieldWithCallback(client.getField("knob2") as ConnectionField<Int>, {
+    runUpdate()
+})
 
 
 fun runSimulation(){
