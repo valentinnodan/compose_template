@@ -60,8 +60,8 @@ fun buildMappingClient(modelFile: String, configFile: String = "", mode: String 
 }
 
 //val client = buildMappingClient("src/main/kotlin/example/COUNTER/COUNTER.xml", "src/main/kotlin/example/COUNTER/COUNTER_CONF.xml", "")
-val client = buildMappingClient("src/main/kotlin/example/COUNTER/COUNTER.xml", "src/main/kotlin/example/COUNTER/COMMON_CONF.xml", "json")
-//val client = buildMappingClient("src/main/kotlin/example/WATER_TANK/WATER_TANK.xml", "src/main/kotlin/example/WATER_TANK/WATER_TANK_CONF.xml", "")
+//val client = buildMappingClient("src/main/kotlin/example/COUNTER/COUNTER.xml", "src/main/kotlin/example/COUNTER/COMMON_CONF.xml", "json")
+val client = buildMappingClient("src/main/kotlin/example/WATER_TANK/WATER_TANK.xml", "src/main/kotlin/example/WATER_TANK/COMMON_CONF.xml", "json")
 //val client = buildMappingClient("src/main/kotlin/example/WATER_TANK/WATER_TANK.xml", "src/main/kotlin/example/WATER_TANK/COMMON_CONF.xml", "json")
 
 
@@ -72,7 +72,8 @@ fun main() = application {
         state = rememberWindowState(width = 600.dp, height = 600.dp)
     ) {
         MaterialTheme {
-            CounterLampHMI(client, "1")
+//            CounterLampHMI(client, "1")
+            System(client, "1")
             client.retrieveValues()
         }
     }

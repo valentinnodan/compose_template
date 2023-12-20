@@ -154,7 +154,7 @@ class JSONClient(mapping: Mapping, conf: Conf): UDPClient() {
         val field = fieldConnector!!.first
         val connector = fieldConnector.second
         val data = Msg(name, field.getTypeID().name, field.getMsgValue())
-        val msg = Json.encodeToString(data)
+        val msg = Json.encodeToString(data).replace("\"", "'")
         connector.request(msg)
     }
 

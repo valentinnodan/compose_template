@@ -19,11 +19,11 @@ import lib.elements.setters.RoundKnob
 import lib.visual.PositionedBox
 
 @Composable
-fun WaterTank(client: AbstractClient) {
+fun WaterTank(client: AbstractClient, mapping: String) {
 
     Box {
-        PositionedBox(@Composable { LampIndicator("lampIndicator1", client) }, 120, 190)
-        PositionedBox(@Composable { LampIndicator("lampIndicator2", client) }, 120, 380)
+        PositionedBox(@Composable { LampIndicator("$mapping#lampIndicator1", client) }, 120, 190)
+        PositionedBox(@Composable { LampIndicator("$mapping#lampIndicator2", client) }, 120, 380)
         PositionedBox(@Composable { PipeConnector(Color.Gray, 100.dp, 30.dp) }, 150, 100)
         PositionedBox(@Composable { Figure(RoundedCornerShape(100.dp),
             modifier = Modifier.size(200.dp, 300.dp)
@@ -33,7 +33,7 @@ fun WaterTank(client: AbstractClient) {
         PositionedBox(@Composable { Pipe(Color.Gray, 100.dp, 30.dp) }, 400, 400)
         PositionedBox(@Composable {
             VerticalIndicator(
-                "tankIndicator", client,
+                "$mapping#tankIndicator", client,
                 color = Color.Blue, step = 20f, minTemperature = 0f, maxTemperature = 100f,
                 trackHeight = 200.dp, indicatorWidth = 20.dp
             )
@@ -59,10 +59,10 @@ fun LampIndicator(name: String, client: AbstractClient, pipeSize: Dp = 30.dp) {
 
 
 @Composable
-fun System(client: AbstractClient) {
+fun System(client: AbstractClient, mapping:String) {
     PositionedBox(@Composable {
         RoundKnob(
-            "knob1",
+            "$mapping#knob1", // 123#lamp#indicator
             client,
             0..100,
             0f,
@@ -72,7 +72,7 @@ fun System(client: AbstractClient) {
     }, 10, 50)
     PositionedBox(@Composable {
         RoundKnob(
-            "knob2",
+            "$mapping#knob2",
             client,
             0..100,
             0f,
@@ -80,17 +80,17 @@ fun System(client: AbstractClient) {
             knobColor = Color.Blue
         )
     }, 10, 120)
-    WaterTank(client)
+    WaterTank(client, mapping)
     PositionedBox(@Composable {
         VerticalIndicator(
-            "outputIndicator", client,
+            "$mapping#outputIndicator", client,
             color = Color.Red, step = 20f, minTemperature = 0f, maxTemperature = 100f,
             trackHeight = 200.dp, indicatorWidth = 20.dp
         )
     }, 440, 150, zIndex = 3f)
     PositionedBox(@Composable {
         LightingText(
-            "stateInlet",
+            "$mapping#stateInlet",
             client,
             "Inlet",
             width = 70.dp,
@@ -100,7 +100,7 @@ fun System(client: AbstractClient) {
     }, 500, 150)
     PositionedBox(@Composable {
         LightingText(
-            "stateHeat",
+            "$mapping#stateHeat",
             client,
             "Heat",
             width = 70.dp,
@@ -110,7 +110,7 @@ fun System(client: AbstractClient) {
     }, 500, 200)
     PositionedBox(@Composable {
         LightingText(
-            "stateOutlet",
+            "$mapping#stateOutlet",
             client,
             "Outlet",
             width = 70.dp,
